@@ -1,0 +1,45 @@
+---
+title: "Redis를 실제 운영 환경에 맞게 설정해보자"
+description: "실제 환경에 맞는 튜닝 방법 :)"
+date: 2024-11-25
+---
+
+## TL;DR
+
+레디스 64비트 기준, 메모리 상한이 정해져 있지 않을 정도로 설정이 필요하다.
+오늘은 설정이 필요한 부분들을 확인해보자.
+
+```shell
+# 어떤 네트위크 인터페이스로부터 연결할 수 있도록 할 것인지 설정 할 수 있다.
+bind 0.0.0.0
+
+# 사용 할 포트를 설정할 수 있다.
+port 6379
+
+# Redis 에서 사용할 수 있는 최대 메모리 용량이다.
+# 검색해보니 보통 물리 머신 메모리의 70~80%로 할당한다.
+maxmemory 1g
+
+# maxmemory 에 설정된 용량을 초과했을때 삭제할 데이터 선정 방식
+# - noeviction : 쓰기 동작에 대해 error 반환 (Default)
+# - volatile-lru : expire 가 설정된 key 들중에서 LRU algorithm 에 의해서 선택된 key 제거
+# - allkeys-lru : 모든 key 들 중 LRU algorithm 에 의해서 선택된 key 제거
+# - volatile-random : expire 가 설정된 key 들 중 임의의 key 제거
+# - allkeys-random : 모든 key 들 중 임의의 key 제거
+# - volatile-ttl : expire time(TTL)이 가장 적게 남은 key 제거 (minor TTL)
+maxmemory-policy volatile-ttl
+
+# 이 외에도, 필요시 복구를 위한 로그 파일 설정 혹은 성능을 위한 압축 혹은 비동기 방식의 키 삭제 등의 설정이 있다.
+# 공식 문서를 참고 해라
+
+
+# 해당 설정은 DB 데이터를 주기적으로 파일로 백업하기 위한 설정이다.
+# Redis 가 재시작되면 이 백업을 통해 DB 를 복구한다.
+
+# 15분 안에 최소 1개 이상의 key 가 변경 되었을 때
+# 5분 안에 최소 10개 이상의 key 가 변경 되었을 때
+# 60초 안에 최소 1000 개 이상의 key 가 변경 되었을 때
+save 900 1
+save 300 10
+save 60 1000
+```
