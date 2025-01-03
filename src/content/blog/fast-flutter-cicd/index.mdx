@@ -1,0 +1,32 @@
+---
+title: "플러터 CI/CD 속도를 개선해보자"
+description: "뭐? 빌드가 오래걸린다고?"
+date: 2025-01-03
+---
+
+# TL;DR
+
+기존 오래 걸리던 플러터 빌드를 개선하기 위해 옵션을 찾던중, 캐싱 옵션을 찾았다.  
+이를 적용하여 빌드 속도를 개선 시켜보자.
+
+## 그래서 어떻게 함?
+
+![이미지](/posts/fast-flutter-cicd/01.png)
+
+진짜 딸깍 수준이다. 옵션으로 cache 여부와 cache key를 설정해주면 끝이다.  
+물론 세부적인 캐시 위치 등 지정 할 수 있지만 선택적이니, 
+더 필요한 설정이 있다면 [공식 문서](https://github.com/subosito/flutter-action?tab=readme-ov-file#caching)를 참고 해보자.
+
+---
+
+적용전, 적용후의 빌드 속도 차이를 확인해보자.
+
+![이미지](/posts/fast-flutter-cicd/02.png)
+
+적용 전: 31초
+
+![이미지](/posts/fast-flutter-cicd/02.png)
+
+적용 후 : 10초
+
+20초가 작아보이긴 하지만, 시간 절약에 도움이 되었다.
