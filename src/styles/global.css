@@ -1,4 +1,4 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+/* @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"); */
 
 @tailwind base;
 @tailwind components;
@@ -22,7 +22,6 @@ body {
   @apply flex flex-col;
   @apply bg-stone-100 dark:bg-stone-900;
   @apply text-black/50 dark:text-white/75;
-
   font-family: "Pretendard Variable", sans-serif;
 }
 
